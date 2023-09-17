@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.ygoty.posts.impl.grpc";
+option java_outer_classname = "PostsProto";
+option optimize_for = SPEED;
+
+package posts;
+
+service PostService {
+    rpc GetPost (GetPostRequest) returns (Post) {}
+
+    rpc CreatePost (CreatePostRequest) returns (CreatePostResponse) {}
+
+    rpc UpdatePost (UpdatePostRequest) returns (UpdatePostResponse) {}
+
+    rpc DeletePost (DeletePostRequest) returns (DeletePostResponse) {}
+
+    rpc LikePost (LikePostRequest) returns (LikePostResponse) {}
+}
+
+message Post {
+    string id = 1;
+    string userId = 2;
+    string body = 3;
+}
+
+// The get post request message containing the post id
+message GetPostRequest {
+    string id = 1;
+}
+
+// The create post request message containing the post body.
+message CreatePostRequest {
+    string userId = 1;
+    string body = 2;
+}
+
+// The response message containing the create post result
+message CreatePostResponse {
+    string message = 1;
+}
+
+// The update post request message containing the updated post body.
+message UpdatePostRequest {
+    string postId = 1;
+    string userId = 2;
+    string body = 3;
+}
+
+// The update message containing the update post result
+message UpdatePostResponse {
+    string message = 1;
+}
+
+// The delete post request message containing the users id.
+message DeletePostRequest {
+    string postId = 1;
+    string userId = 2;
+}
+
+// The delete message containing the delete post result
+message DeletePostResponse {
+    string message = 1;
+}
+
+// The like post request message containing the users id.
+message LikePostRequest {
+    string postId = 1;
+    string userId = 2;
+}
+
+// The like message containing the delete post result
+message LikePostResponse {
+    string message = 1;
+}
+
+

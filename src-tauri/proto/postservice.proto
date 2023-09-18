@@ -10,6 +10,8 @@ package posts;
 service PostService {
     rpc GetPost (GetPostRequest) returns (Post) {}
 
+    rpc GetPosts (GetPostsRequest) returns (GetPostsResponse) {}
+
     rpc CreatePost (CreatePostRequest) returns (CreatePostResponse) {}
 
     rpc UpdatePost (UpdatePostRequest) returns (UpdatePostResponse) {}
@@ -25,9 +27,21 @@ message Post {
     string body = 3;
 }
 
-// The get post request message containing the post id
+// The get post request message containing the post id.
 message GetPostRequest {
     string id = 1;
+}
+
+// Get a list of posts, takes a page number and page size.
+message GetPostsRequest {
+    int32 pageNumber = 1;
+    int32 pageSize = 2;
+}
+
+// Response with the list of posts and a next page token.
+message GetPostsResponse {
+    repeated Post posts = 1;
+    string nextPageToken = 2;
 }
 
 // The create post request message containing the post body.
@@ -76,3 +90,22 @@ message LikePostResponse {
 }
 
 
+//// EVENTS
+message PostCreated {
+    Post post = 1;
+}
+
+message PostUpdated {
+    string body = 1;
+    string edited = 2;
+}
+
+message PostDeleted {
+    string id = 1;
+    string userId = 2;
+}
+
+message PostLiked {
+    string userId = 1;
+    string reaction = 2;
+}

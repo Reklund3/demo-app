@@ -8,6 +8,9 @@ extern "C" {
     #[wasm_bindgen(js_name = invokeGreet)]
     async fn greet(name: String) -> JsValue;
 
+    #[wasm_bindgen(js_name = invokeCreatePost, catch)]
+    async fn create_post(user_id: String, body: String) -> Result<JsValue, JsValue>;
+
     #[wasm_bindgen(js_name = invokeGetPost, catch)]
     async fn get_post(id: String) -> Result<JsValue, JsValue>;
 }
@@ -63,6 +66,55 @@ pub fn app() -> Html {
             );
         })
     };
+
+    /// CREATE POST
+
+    let create_post_body_input_ref = use_node_ref();
+    let create_post_body = use_state(|| String::new());
+
+    let create_post_msg = use_state(|| String::new());
+    {
+        let create_post_msg = create_post_msg.clone();
+        let create_post_body = create_post_body.clone();
+        let create_post_body2 = create_post_body.clone();
+        use_effect_with_deps(
+            move |_| {
+                spawn_local(async move {
+                    if create_post_body.is_empty() {
+                        return;
+                    }
+                    // let args = to_value(&GetPostArgs { id: &*post_id }).unwrap();
+                    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
+                    let result: Result<JsValue, JsValue> = create_post("8b6a5f15-7e5c-4418-b3c3-672f5c24abb7".to_string(), create_post_body.to_string()).await;
+                    let new_msg = match result {
+                        Ok(response) => response.as_string().unwrap(),
+                        Err(error) => error.as_string().unwrap(),
+                    };
+                    create_post_msg.set(new_msg);
+                });
+
+                || {}
+            },
+            create_post_body2,
+        );
+    }
+
+    let create_post = {
+        println!("submitted request to create post");
+        let create_post_body = create_post_body.clone();
+        let create_post_body_input_ref = create_post_body_input_ref.clone();
+        Callback::from(move |e: SubmitEvent| {
+            e.prevent_default();
+            create_post_body.set(
+                create_post_body_input_ref
+                    .cast::<web_sys::HtmlInputElement>()
+                    .unwrap()
+                    .value(),
+            );
+        })
+    };
+
+    /// CREATE POST
 
     let get_post_input_ref = use_node_ref();
 
@@ -144,6 +196,13 @@ pub fn app() -> Html {
             </form>
 
             <p><b>{ &*get_post_msg }</b></p>
+
+            <form class="row" onsubmit={create_post}>
+                <input id="get-post-input" ref={create_post_body_input_ref} placeholder="Enter the post message" />
+                <button type="submit">{"Submit"}</button>
+            </form>
+
+            <p><b>{ &*create_post_body }</b></p>
         </main>
     }
 }

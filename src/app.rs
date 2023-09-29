@@ -1,3 +1,4 @@
+use crate::components::footer::{Footer, Props};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::spawn_local;
@@ -68,7 +69,6 @@ pub fn app() -> Html {
     };
 
     /// CREATE POST
-
     let create_post_body_input_ref = use_node_ref();
     let create_post_body = use_state(|| String::new());
 
@@ -85,7 +85,11 @@ pub fn app() -> Html {
                     }
                     // let args = to_value(&GetPostArgs { id: &*post_id }).unwrap();
                     // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-                    let result: Result<JsValue, JsValue> = create_post("8b6a5f15-7e5c-4418-b3c3-672f5c24abb7".to_string(), create_post_body.to_string()).await;
+                    let result: Result<JsValue, JsValue> = create_post(
+                        "8b6a5f15-7e5c-4418-b3c3-672f5c24abb7".to_string(),
+                        create_post_body.to_string(),
+                    )
+                    .await;
                     let new_msg = match result {
                         Ok(response) => response.as_string().unwrap(),
                         Err(error) => error.as_string().unwrap(),
@@ -115,7 +119,6 @@ pub fn app() -> Html {
     };
 
     /// CREATE POST
-
     let get_post_input_ref = use_node_ref();
 
     let post_id: UseStateHandle<String> = use_state(|| String::new());
@@ -163,25 +166,6 @@ pub fn app() -> Html {
 
     html! {
         <main class="container">
-            <div class="row">
-                <a href="https://tauri.app" target="_blank">
-                    <img src="public/tauri.svg" class="logo tauri" alt="Tauri logo"/>
-                </a>
-                <a href="https://yew.rs" target="_blank">
-                    <img src="public/yew.png" class="logo yew" alt="Yew logo"/>
-                </a>
-            </div>
-
-            <p>{"Click on the Tauri and Yew logos to learn more."}</p>
-
-            <p>
-                {"Recommended IDE setup: "}
-                <a href="https://code.visualstudio.com/" target="_blank">{"VS Code"}</a>
-                {" + "}
-                <a href="https://github.com/tauri-apps/tauri-vscode" target="_blank">{"Tauri"}</a>
-                {" + "}
-                <a href="https://github.com/rust-lang/rust-analyzer" target="_blank">{"rust-analyzer"}</a>
-            </p>
 
             <form class="row" onsubmit={greet}>
                 <input id="greet-input" ref={greet_input_ref} placeholder="Enter a name..." />
@@ -203,6 +187,8 @@ pub fn app() -> Html {
             </form>
 
             <p><b>{ &*create_post_body }</b></p>
+
+            <Footer />
         </main>
     }
 }

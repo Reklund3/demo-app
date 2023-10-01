@@ -13,7 +13,7 @@ impl Component for Footer {
         Self
     }
 
-    fn view(&self, ctx: &Context<Self>) -> Html {
+    fn view(&self, _ctx: &Context<Self>) -> Html {
         html! {
             <div class="container footer">
                 <hr class="row" style="width: 95%;" />

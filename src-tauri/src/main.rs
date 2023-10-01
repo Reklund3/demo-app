@@ -15,12 +15,6 @@ pub mod post_service {
     tonic::include_proto!("posts");
 }
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
 #[derive(Debug, Serialize)]
 pub struct GetPostError {
     reason: String,
@@ -34,6 +28,7 @@ pub struct ServicePost {
     // created_date: Timestamp
 }
 
+// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command(rename_all = "snake_case")]
 async fn create_post(user_id: &str, body: &str) -> Result<String, String> {
     let client = hyper::Client::builder().http2_only(true).build_http();
@@ -143,7 +138,7 @@ async fn get_post(id: &str) -> Result<String, String> {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet, create_post, get_post])
+        .invoke_handler(tauri::generate_handler![create_post, get_post])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 

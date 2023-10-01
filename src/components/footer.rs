@@ -1,13 +1,13 @@
 use yew::{html, Component, Context, Html, Properties};
 
 #[derive(Properties, PartialEq)]
-pub struct Props;
+pub struct FooterProps;
 
 pub struct Footer;
 
 impl Component for Footer {
     type Message = ();
-    type Properties = Props;
+    type Properties = FooterProps;
 
     fn create(_ctx: &Context<Self>) -> Self {
         Self

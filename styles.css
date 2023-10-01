@@ -27,14 +27,14 @@
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
+  height: 2em;
+  padding: 0.5em;
   will-change: filter;
   transition: 0.75s;
 }
 
 .logo.tauri:hover {
-  filter: drop-shadow(0 0 2em #24c8db);
+  filter: drop-shadow(0 0 0.5em #24c8db);
 }
 
 .row {
@@ -109,4 +109,13 @@ button {
   button:active {
     background-color: #0f0f0f69;
   }
+}
+
+.footer {
+  position: absolute;
+  padding: 0;
+  margin: 0 0 0 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }

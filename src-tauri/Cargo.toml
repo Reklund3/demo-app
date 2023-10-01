@@ -21,6 +21,7 @@ hyper = { version = "0.14" }
 hyper-rustls = { version = "0.24", features = ["http2"] }
 http-body = { version = "0.4.2" }
 prost = "0.12"
+prost-types = "0.12"
 tonic = { version = "0.10.0" }
 tonic-web = { version = "0.10.0" }
 tonic-health = { version = "0.10.0" }

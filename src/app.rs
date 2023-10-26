@@ -1,3 +1,4 @@
+use crate::components::check_for_updates::CheckForUpdates;
 use crate::components::create_post::CreatePost;
 use crate::components::footer::Footer;
 use crate::components::post_details::PostDetails;
@@ -7,9 +8,11 @@ use yew::prelude::*;
 pub fn app() -> Html {
     html! {
         <main class="container">
-            <PostDetails />
+            // <PostDetails />
+            //
+            // <CreatePost />
 
-            <CreatePost />
+            <CheckForUpdates />
 
             <Footer />
         </main>

@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "demo-app",
-    "version": "0.0.0"
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
@@ -33,6 +33,17 @@
     },
     "security": {
       "csp": null
+    },
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://gist.githubusercontent.com/Reklund3/3f372679a4beac53bf46bf9d31c7754d/raw/f1e3cdd2748bca5de9008ff4c01a519f62e104cb/gistfile1.json"
+      ],
+      "dialog": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEFGM0Y0MTc4NUJGMTY2NQpSV1JsRnIrRkYvVHpDbGM1NWFIV2FGQ0hISVljRDlNeE5IVWJ6cll3Z3YrUDRmRUpKeHlNdTBmWgo=",
+      "windows": {
+        "installMode": "basicUi"
+      }
     },
     "windows": [
       {

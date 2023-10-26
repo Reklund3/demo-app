@@ -7,8 +7,11 @@ use hyper::client::HttpConnector;
 use hyper::Client;
 use serde::Serialize;
 use serde_json::to_value;
+use tauri::updater::UpdateResponse;
+use tauri::{App, CustomMenuItem, Manager, Menu, MenuItem, Submenu};
 use tonic;
 use tonic::body::BoxBody;
+use tonic::IntoRequest;
 use tonic_web::{GrpcWebCall, GrpcWebClientLayer, GrpcWebClientService};
 
 pub mod post_service {
@@ -135,10 +138,38 @@ async fn get_post(id: &str) -> Result<String, String> {
     result
 }
 
+#[tauri::command(rename_all = "snake_case")]
+async fn check_for_update(app_handle: tauri::AppHandle) -> Result<String, String> {
+    println!("Checking for update.");
+    app_handle.trigger_global(tauri::updater::EVENT_CHECK_UPDATE, None);
+    Ok("yay".into())
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![create_post, get_post])
+    // here `"check for update".to_string()` defines the menu item id, and the second parameter is the menu item label.
+    let check_for_update_menu_item =
+        CustomMenuItem::new("check for update".to_string(), "Check for update...");
+    let submenu = Submenu::new("Help", Menu::new().add_item(check_for_update_menu_item));
+    let menu = Menu::new().add_submenu(submenu);
+
+    let app = tauri::Builder::default()
+        .menu(menu)
+        .on_menu_event(|event| {
+            match event.menu_item_id() {
+                "check for update" => {
+                    //TODO: Replace the button in the app with this function.
+                    println!("The menu button was pressed.");
+                }
+                _ => {}
+            }
+        })
+        .invoke_handler(tauri::generate_handler![
+            create_post,
+            get_post,
+            check_for_update
+        ])
+        // .build(tauri::generate_context!())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 

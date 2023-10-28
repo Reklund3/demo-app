@@ -1,0 +1,175 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "org.ygoty.posts.impl.grpc";
+option java_outer_classname = "PostsProto";
+option optimize_for = SPEED;
+
+package posts;
+
+service PostService {
+    rpc GetPost (GetPostRequest) returns (Post) {}
+
+    rpc ListPosts (ListPostsRequest) returns (ListPostsResponse) {}
+
+    rpc CreatePost (CreatePostRequest) returns (CreatePostResponse) {}
+
+    rpc UpdatePost (UpdatePostRequest) returns (UpdatePostResponse) {}
+
+    rpc DeletePost (DeletePostRequest) returns (DeletePostResponse) {}
+
+    rpc LikePost (LikePostRequest) returns (LikePostResponse) {}
+}
+
+message Post {
+    string id = 1;
+    string userId = 2;
+    string body = 3;
+    google.protobuf.Timestamp createdDate = 4;
+}
+
+// The get post request message containing the post id
+message GetPostRequest {
+    string id = 1;
+}
+
+message ListPostsRequest {
+    int32 pageNumber = 1;
+    int32 pageSize = 2;
+}
+
+message ListPostsResponse {
+    repeated Post posts = 1;
+    string nextPageToken = 2;
+}
+
+
+// The create post request message containing the post body.
+message CreatePostRequest {
+    string userId = 1;
+    string body = 2;
+}
+
+// The response message containing the create post result
+message CreatePostResponse {
+    oneof response {
+        CreatePostSuccess success = 1;
+        CreatePostFailure failure = 2;
+    }
+}
+
+// Creating the post was successful
+message CreatePostSuccess {
+    Post post = 1;
+}
+
+// Creating the post was a failure
+message CreatePostFailure {
+    repeated string errors = 1;
+}
+
+
+// The update post request message containing the updated post body.
+message UpdatePostRequest {
+    string postId = 1;
+    string userId = 2;
+    string body = 3;
+}
+
+// The update message containing the update post result
+message UpdatePostResponse {
+    oneof response {
+        UpdatePostSuccess success = 1;
+        UpdatePostFailure failure = 2;
+    }
+}
+
+// Returned when the request to update a post was successful.
+message UpdatePostSuccess {}
+
+// Returned when the request to update a post was a failure.
+message UpdatePostFailure {
+    repeated string errors = 1;
+}
+
+
+// The delete post request message containing the users id.
+message DeletePostRequest {
+    string postId = 1;
+    string userId = 2;
+}
+
+// The delete message containing the delete post result
+message DeletePostResponse {
+    oneof response {
+        DeletePostSuccess success = 1;
+        DeletePostFailure failure = 2;
+    };
+}
+
+// Returned when the request to delete a post was successful.
+message DeletePostSuccess {}
+
+// Returned when the request to delete a post was a failure.
+message DeletePostFailure {
+    repeated string errors = 1;
+}
+
+
+// The like post request message containing the users id.
+message LikePostRequest {
+    string postId = 1;
+    string userId = 2;
+}
+
+// The like message containing the delete post result
+message LikePostResponse {
+    oneof response {
+        LikePostSuccess success = 1;
+        LikePostFailure failure = 2;
+    }
+}
+
+// Returned when the request to delete a post was successful.
+message LikePostSuccess {}
+
+// Returned when the request to delete a post was a failure.
+message LikePostFailure {
+    repeated string errors = 1;
+}
+
+
+//// API EVENTS
+message PostEvent {
+    oneof sealedValue {
+        PostCreated created = 1;
+        PostUpdated updated = 2;
+        PostDeleted deleted = 3;
+        PostLiked liked = 4;
+    }
+}
+
+message PostCreated {
+    Post post = 1;
+}
+
+message PostUpdated {
+    string id = 1;
+    string updaterId = 2;
+    string body = 3;
+    google.protobuf.Timestamp editedAt = 4;
+}
+
+message PostDeleted {
+    string id = 1;
+    string deleterId = 2;
+    google.protobuf.Timestamp deletedAt = 3;
+}
+
+message PostLiked {
+    string id = 1;
+    string userId = 2;
+    string reaction = 3;
+    google.protobuf.Timestamp likedAt = 4;
+}

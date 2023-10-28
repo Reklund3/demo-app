@@ -1,0 +1,58 @@
+{
+  "build": {
+    "beforeDevCommand": "trunk serve",
+    "beforeBuildCommand": "trunk build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist",
+    "withGlobalTauri": true
+  },
+  "package": {
+    "productName": "demo-app",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": false,
+        "execute": true,
+        "open": true
+      }
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.rob.dev",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ]
+    },
+    "security": {
+      "csp": null
+    },
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://gist.githubusercontent.com/Reklund3/3f372679a4beac53bf46bf9d31c7754d/raw/f1e3cdd2748bca5de9008ff4c01a519f62e104cb/gistfile1.json"
+      ],
+      "dialog": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEFGM0Y0MTc4NUJGMTY2NQpSV1JsRnIrRkYvVHpDbGM1NWFIV2FGQ0hISVljRDlNeE5IVWJ6cll3Z3YrUDRmRUpKeHlNdTBmWgo=",
+      "windows": {
+        "installMode": "basicUi"
+      }
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "demo-app",
+        "width": 1200,
+        "height": 600
+      }
+    ]
+  }
+}

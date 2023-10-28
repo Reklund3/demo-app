@@ -8,5 +8,5 @@ export async function invokeGetPost(id) {
 }
 
 export async function invokeCheckForUpdate() {
-    return await invoke("check_for_update").then(console.log("calling the check for update."));
+    return await invoke("check_for_update");
 }

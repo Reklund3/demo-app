@@ -140,9 +140,8 @@ async fn get_post(id: &str) -> Result<String, String> {
 
 #[tauri::command(rename_all = "snake_case")]
 async fn check_for_update(app_handle: tauri::AppHandle) -> Result<String, String> {
-    println!("Checking for update.");
     app_handle.trigger_global(tauri::updater::EVENT_CHECK_UPDATE, None);
-    Ok("yay".into())
+    Ok("Update Requested".into())
 }
 
 #[tokio::main]
@@ -155,14 +154,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let app = tauri::Builder::default()
         .menu(menu)
-        .on_menu_event(|event| {
-            match event.menu_item_id() {
-                "check for update" => {
-                    //TODO: Replace the button in the app with this function.
-                    println!("The menu button was pressed.");
-                }
-                _ => {}
+        .on_menu_event(|event| match event.menu_item_id() {
+            "check for update" => {
+                event
+                    .window()
+                    .trigger_global(tauri::updater::EVENT_CHECK_UPDATE, None);
             }
+            _ => {}
         })
         .invoke_handler(tauri::generate_handler![
             create_post,
